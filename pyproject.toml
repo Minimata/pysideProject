@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pysideproject"
+version = "0.1.0"
+description = "Small sample project for pyside tests"
+authors = ["Minimata <minimata94@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+PySide2 = "^5.15.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
