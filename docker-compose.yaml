@@ -1,0 +1,9 @@
+services:
+  backend:
+    build: backend
+    ports:
+      - 8080:8000
+    # entrypoint: ["poetry", "run", "python", "-m", "main"]
+    command: ["poetry", "run", "uvicorn", "main:app", "--reload"]
+    volumes:
+      - ./backend/pyproject.toml:/pyproject.toml

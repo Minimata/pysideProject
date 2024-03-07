@@ -1,3 +1,5 @@
+import requests
+
 from PySide2 import QtWidgets, QtCore
 
 
@@ -51,6 +53,22 @@ class MyButton(QtWidgets.QPushButton):
         self.triggered.emit(text)
 
 
+class RequestManager(QtCore.QObject):
+    def __init__(self, url="https://echo.free.beeceptor.com"):
+        super().__init__()
+        self.url = url
+
+    @QtCore.Slot()
+    def get_request(self):
+        result: requests.Response = requests.get(self.url)
+        print(result.json())
+
+    @QtCore.Slot()
+    def post_request(self):
+        result: requests.Response = requests.post(self.url, {"Hello": "World!"})
+        print(result.json())
+
+
 def main():
     app = QtWidgets.QApplication()
     window = QtWidgets.QMainWindow()
@@ -60,6 +78,7 @@ def main():
     button1 = MyButton("Push me!")
     button2 = MyButton("No, push me!")
     msg_trigger = MessageTrigger()
+    request_manager = RequestManager()
 
     button_layout = QtWidgets.QHBoxLayout()
     button_layout.addWidget(button1)
@@ -75,10 +94,21 @@ def main():
     label_layout.addWidget(label)
     label_layout.addStretch()
 
+    button_get = QtWidgets.QPushButton("Get request")
+    button_post = QtWidgets.QPushButton("Post request")
+    request_layout = QtWidgets.QHBoxLayout()
+    request_layout.addWidget(button_get)
+    request_layout.addWidget(button_post)
+
+    button_get.clicked.connect(request_manager.get_request)
+    button_post.clicked.connect(request_manager.post_request)
+
     main_layout = QtWidgets.QVBoxLayout()
     main_layout.addStretch()
     main_layout.addLayout(label_layout)
     main_layout.addLayout(button_layout)
+    main_layout.addStretch()
+    main_layout.addLayout(request_layout)
     main_layout.addStretch()
 
     main_widget = QtWidgets.QWidget()
